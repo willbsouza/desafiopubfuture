@@ -1,4 +1,4 @@
-package com.willbsouza.desafiopubfuture.entities.controller;
+package com.willbsouza.desafiopubfuture.controller;
 
 import com.willbsouza.desafiopubfuture.entities.Contas;
 import com.willbsouza.desafiopubfuture.service.ContasService;
