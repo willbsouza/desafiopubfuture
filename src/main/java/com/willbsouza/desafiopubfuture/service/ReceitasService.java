@@ -55,4 +55,12 @@ public class ReceitasService {
     public void deleteById(Integer id){
         receitasRepository.deleteById(id);
     }
+
+    public Double calcularReceitaTotal(){
+        Double sum = receitasRepository.findAll()
+                .stream()
+                .map(x -> x.getValor())
+                .reduce(0.0, Double::sum);
+        return sum;
+    }
 }

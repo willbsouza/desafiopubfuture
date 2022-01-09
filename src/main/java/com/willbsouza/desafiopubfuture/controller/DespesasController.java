@@ -37,6 +37,11 @@ public class DespesasController {
         return new ResponseEntity<List<Despesas>>(despesasService.findByType(tipoDespesa), HttpStatus.OK);
     }
 
+    @GetMapping("/despesas/total")
+    public ResponseEntity<Double> totalDespesa(){
+        return new ResponseEntity<Double>(despesasService.calcularDespesaTotal(), HttpStatus.OK);
+    }
+
     @PostMapping("/despesas")
     public ResponseEntity<Despesas> save(@RequestBody Despesas despesa){
         return new ResponseEntity<Despesas>(despesasService.save(despesa),HttpStatus.CREATED);

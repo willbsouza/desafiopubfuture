@@ -36,4 +36,21 @@ public class ContasService {
     public void deleteById(Integer id){
         contasRepository.deleteById(id);
     }
+
+    public Double calcularTotal(){
+        Double sum = contasRepository.findAll()
+                .stream()
+                .map(x -> x.getSaldo())
+                .reduce(0.0, Double::sum);
+        return sum;
+    }
+
+    public Contas transferirSaldo(Integer idOrigem, Integer idDestino, Double valor){
+        Contas origem = contasRepository.findById(idOrigem).get();
+        Contas destino = contasRepository.findById(idDestino).get();
+        origem.setSaldo(origem.getSaldo() - valor);
+        destino.setSaldo(destino.getSaldo() + valor);
+        contasRepository.saveAndFlush(origem);
+        return contasRepository.saveAndFlush(destino);
+    }
 }

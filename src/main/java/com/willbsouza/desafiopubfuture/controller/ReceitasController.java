@@ -37,6 +37,11 @@ public class ReceitasController {
         return new ResponseEntity<List<Receitas>>(receitasService.findByType(tipoReceita), HttpStatus.OK);
     }
 
+    @GetMapping("/receitas/total")
+    public ResponseEntity<Double> totalReceita(){
+        return new ResponseEntity<Double>(receitasService.calcularReceitaTotal(), HttpStatus.OK);
+    }
+
     @PostMapping("/receitas")
     public ResponseEntity<Receitas> save(@RequestBody Receitas receita){
         return new ResponseEntity<Receitas>(receitasService.save(receita), HttpStatus.CREATED);

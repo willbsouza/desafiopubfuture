@@ -24,6 +24,10 @@ public class ContasController {
     public ResponseEntity<Contas> findById(@PathVariable Integer id){
         return new ResponseEntity<Contas>(contasService.findById(id),HttpStatus.OK);
     }
+    @GetMapping("/contas/total")
+    public ResponseEntity<Double> totalContas(){
+        return new ResponseEntity<Double>(contasService.calcularTotal(), HttpStatus.OK);
+    }
 
     @PostMapping("/contas")
     public ResponseEntity<Contas> save(@RequestBody Contas conta){
@@ -33,6 +37,13 @@ public class ContasController {
     @PutMapping("/contas/{id}")
     public ResponseEntity<Contas> update(@PathVariable Integer id, @RequestBody Contas conta){
         return new ResponseEntity<Contas>(contasService.update(id, conta), HttpStatus.OK);
+    }
+
+    @PutMapping("/contas/transferencia")
+    public ResponseEntity<Contas> transferirSaldo(@RequestParam(name = "idOrigem") Integer idOrigem,
+                                                   @RequestParam(name = "idDestino") Integer idDestino,
+                                                   @RequestParam(name = "valor") Double valor) {
+        return new ResponseEntity<Contas>(contasService.transferirSaldo(idOrigem, idDestino, valor), HttpStatus.OK);
     }
 
     @DeleteMapping("/contas/{id}")

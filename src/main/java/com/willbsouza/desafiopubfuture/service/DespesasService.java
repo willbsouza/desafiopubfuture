@@ -57,4 +57,12 @@ public class DespesasService {
     public void deleteById(Integer id){
         despesasRepository.deleteById(id);
     }
+
+    public Double calcularDespesaTotal(){
+        Double sum = despesasRepository.findAll()
+                .stream()
+                .map(x -> x.getValor())
+                .reduce(0.0, Double::sum);
+        return sum;
+    }
 }
