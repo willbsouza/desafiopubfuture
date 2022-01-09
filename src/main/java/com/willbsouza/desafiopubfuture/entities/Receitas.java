@@ -2,10 +2,8 @@ package com.willbsouza.desafiopubfuture.entities;
 
 import com.willbsouza.desafiopubfuture.entities.enums.TipoReceita;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -15,21 +13,26 @@ public class Receitas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Double valor;
-    private String dataRecebimento;
-    private String dataRecebimentoEsperado;
+    private Date dataRecebimento;
+    private Date dataRecebimentoEsperado;
     private String descricao;
     private TipoReceita tipoReceita;
+
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Contas conta;
 
     public Receitas() {
     }
 
-    public Receitas(Integer id, Double valor, String dataRecebimento, String dataRecebimentoEsperado, String descricao, TipoReceita tipoReceita) {
+    public Receitas(Integer id, Double valor, Date dataRecebimento, Date dataRecebimentoEsperado, String descricao, TipoReceita tipoReceita, Contas conta) {
         this.id = id;
         this.valor = valor;
         this.dataRecebimento = dataRecebimento;
         this.dataRecebimentoEsperado = dataRecebimentoEsperado;
         this.descricao = descricao;
         this.tipoReceita = tipoReceita;
+        this.conta = conta;
     }
 
     public Integer getId() {
@@ -48,19 +51,19 @@ public class Receitas {
         this.valor = valor;
     }
 
-    public String getDataRecebimento() {
+    public Date getDataRecebimento() {
         return dataRecebimento;
     }
 
-    public void setDataRecebimento(String dataRecebimento) {
+    public void setDataRecebimento(Date dataRecebimento) {
         this.dataRecebimento = dataRecebimento;
     }
 
-    public String getDataRecebimentoEsperado() {
+    public Date getDataRecebimentoEsperado() {
         return dataRecebimentoEsperado;
     }
 
-    public void setDataRecebimentoEsperado(String dataRecebimentoEsperado) {
+    public void setDataRecebimentoEsperado(Date dataRecebimentoEsperado) {
         this.dataRecebimentoEsperado = dataRecebimentoEsperado;
     }
 
@@ -78,6 +81,14 @@ public class Receitas {
 
     public void setTipoReceita(TipoReceita tipoReceita) {
         this.tipoReceita = tipoReceita;
+    }
+
+    public Contas getConta() {
+        return conta;
+    }
+
+    public void setConta(Contas conta) {
+        this.conta = conta;
     }
 
     @Override

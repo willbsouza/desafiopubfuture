@@ -3,6 +3,8 @@ package com.willbsouza.desafiopubfuture.controller;
 import com.willbsouza.desafiopubfuture.entities.Contas;
 import com.willbsouza.desafiopubfuture.service.ContasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,27 +15,29 @@ public class ContasController {
     @Autowired
     private ContasService contasService;
 
-    @GetMapping(value = "/contas")
-    public List<Contas> findAll(){
-        return contasService.findAll();
+    @GetMapping("/contas")
+    public ResponseEntity<List<Contas>> findAll(){
+        return new ResponseEntity<List<Contas>>(contasService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/contas/{id}")
-    public Contas findById(@PathVariable Integer id){
-        return contasService.findById(id);
+    @GetMapping("/contas/{id}")
+    public ResponseEntity<Contas> findById(@PathVariable Integer id){
+        return new ResponseEntity<Contas>(contasService.findById(id),HttpStatus.OK);
     }
 
-    @PostMapping(value = "/contas")
-    public Contas save(@RequestBody Contas conta){
-        return contasService.save(conta);
+    @PostMapping("/contas")
+    public ResponseEntity<Contas> save(@RequestBody Contas conta){
+        return new ResponseEntity<Contas>(contasService.save(conta), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/contas/{id}")
-    public Contas update(@PathVariable Integer id, @RequestBody Contas conta){
-        return contasService.update(id, conta);
+    @PutMapping("/contas/{id}")
+    public ResponseEntity<Contas> update(@PathVariable Integer id, @RequestBody Contas conta){
+        return new ResponseEntity<Contas>(contasService.update(id, conta), HttpStatus.OK);
     }
-    @DeleteMapping(value = "/contas/{id}")
-    public void deleteById(@PathVariable Integer id) {
+
+    @DeleteMapping("/contas/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Integer id) {
         contasService.deleteById(id);
+        return new ResponseEntity<String>("Conta deletada com sucesso!", HttpStatus.NO_CONTENT);
     }
 }
