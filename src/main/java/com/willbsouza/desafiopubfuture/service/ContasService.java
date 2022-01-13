@@ -3,7 +3,9 @@ package com.willbsouza.desafiopubfuture.service;
 import com.willbsouza.desafiopubfuture.entities.Contas;
 import com.willbsouza.desafiopubfuture.repository.ContasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,9 +20,9 @@ public class ContasService {
     }
 
     public Contas findById(Integer id){
-        return contasRepository.findById(id).orElse(null);
+        return contasRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID Conta inexistente."));
     }
-
+    
     public Contas save(Contas conta){
         return contasRepository.save(conta);
     }

@@ -1,5 +1,6 @@
 package com.willbsouza.desafiopubfuture.controller;
 
+import com.willbsouza.desafiopubfuture.dto.ReceitasDTO;
 import com.willbsouza.desafiopubfuture.entities.Receitas;
 import com.willbsouza.desafiopubfuture.entities.enums.TipoReceita;
 import com.willbsouza.desafiopubfuture.service.ReceitasService;
@@ -43,13 +44,13 @@ public class ReceitasController {
     }
 
     @PostMapping("/receitas")
-    public ResponseEntity<Receitas> save(@RequestBody Receitas receita){
-        return new ResponseEntity<Receitas>(receitasService.save(receita), HttpStatus.CREATED);
+    public ResponseEntity<Receitas> save(@RequestBody ReceitasDTO receitasDTO){
+        return new ResponseEntity<Receitas>(receitasService.save(receitasDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/receitas/{id}")
-    public ResponseEntity<Receitas> update(@PathVariable Integer id, @RequestBody Receitas receita){
-        return new ResponseEntity<Receitas>(receitasService.update(id, receita), HttpStatus.OK);
+    public ResponseEntity<Receitas> update(@PathVariable Integer id, @RequestBody ReceitasDTO receitasDTO){
+        return new ResponseEntity<Receitas>(receitasService.update(id, receitasDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("receitas/{id}")

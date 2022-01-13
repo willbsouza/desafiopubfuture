@@ -24,6 +24,7 @@ public class ContasController {
     public ResponseEntity<Contas> findById(@PathVariable Integer id){
         return new ResponseEntity<Contas>(contasService.findById(id),HttpStatus.OK);
     }
+
     @GetMapping("/contas/total")
     public ResponseEntity<Double> totalContas(){
         return new ResponseEntity<Double>(contasService.calcularTotal(), HttpStatus.OK);

@@ -1,10 +1,15 @@
 package com.willbsouza.desafiopubfuture.service;
 
+import com.willbsouza.desafiopubfuture.dto.ReceitasDTO;
+import com.willbsouza.desafiopubfuture.entities.Contas;
 import com.willbsouza.desafiopubfuture.entities.Receitas;
 import com.willbsouza.desafiopubfuture.entities.enums.TipoReceita;
+import com.willbsouza.desafiopubfuture.repository.ContasRepository;
 import com.willbsouza.desafiopubfuture.repository.ReceitasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
@@ -16,12 +21,15 @@ public class ReceitasService {
     @Autowired
     private ReceitasRepository receitasRepository;
 
+    @Autowired
+    private ContasRepository contasRepository;
+
     public List<Receitas> findAll(){
         return receitasRepository.findAll();
     }
 
     public Receitas findById(Integer id){
-        return receitasRepository.findById(id).orElse(null);
+        return receitasRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID de Receita inexistente."));
     }
 
     public List<Receitas> findByDate(Date dataInicial, Date dataFinal){
@@ -37,18 +45,33 @@ public class ReceitasService {
                 .collect(Collectors.toList());
     }
 
-    public Receitas save(Receitas receita){
+    public Receitas save(ReceitasDTO receitasDTO){
+        Receitas receita = new Receitas();
+        Integer contaId = receitasDTO.getContaId();
+        Contas conta = contasRepository
+                .findById(contaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta inexistente."));
+        receita.setValor(receitasDTO.getValor());
+        receita.setDataRecebimento(receitasDTO.getDataRecebimento());
+        receita.setDataRecebimentoEsperado(receitasDTO.getDataRecebimentoEsperado());
+        receita.setDescricao(receitasDTO.getDescricao());
+        receita.setTipoReceita(receitasDTO.getTipoReceita());
+        receita.setConta(conta);
         return receitasRepository.save(receita);
     }
 
-    public Receitas update(Integer id, Receitas receita) {
+    public Receitas update(Integer id, ReceitasDTO receitasDTO) {
+        Integer contaId = receitasDTO.getContaId();
+        Contas conta = contasRepository
+                .findById(contaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta inexistente."));
         Receitas obj = receitasRepository.findById(id).get();
-        obj.setValor(receita.getValor());
-        obj.setDataRecebimento(receita.getDataRecebimento());
-        obj.setDataRecebimentoEsperado(receita.getDataRecebimentoEsperado());
-        obj.setDescricao(receita.getDescricao());
-        obj.setTipoReceita(receita.getTipoReceita());
-        obj.setConta(receita.getConta());
+        obj.setValor(receitasDTO.getValor());
+        obj.setDataRecebimento(receitasDTO.getDataRecebimento());
+        obj.setDataRecebimentoEsperado(receitasDTO.getDataRecebimentoEsperado());
+        obj.setDescricao(receitasDTO.getDescricao());
+        obj.setTipoReceita(receitasDTO.getTipoReceita());
+        obj.setConta(conta);
         return receitasRepository.save(obj);
     }
 

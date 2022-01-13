@@ -1,10 +1,15 @@
 package com.willbsouza.desafiopubfuture.service;
 
+import com.willbsouza.desafiopubfuture.dto.DespesasDTO;
+import com.willbsouza.desafiopubfuture.entities.Contas;
 import com.willbsouza.desafiopubfuture.entities.Despesas;
 import com.willbsouza.desafiopubfuture.entities.enums.TipoDespesa;
+import com.willbsouza.desafiopubfuture.repository.ContasRepository;
 import com.willbsouza.desafiopubfuture.repository.DespesasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,12 +24,15 @@ public class DespesasService {
     @Autowired
     private DespesasRepository despesasRepository;
 
+    @Autowired
+    private ContasRepository contasRepository;
+
     public List<Despesas> findAll(){
         return despesasRepository.findAll();
     }
 
     public Despesas findById(Integer id){
-        return despesasRepository.findById(id).orElse(null);
+        return despesasRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID Despesa inexistente."));
     }
 
     public List<Despesas> findByDate(Date dataInicial, Date dataFinal){
@@ -40,17 +48,29 @@ public class DespesasService {
                 .collect(Collectors.toList());
     }
 
-    public Despesas save(Despesas despesa){
+    public Despesas save(DespesasDTO despesasDTO){
+        Contas conta =contasRepository
+                .findById(despesasDTO.getContaId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta inexistente."));
+        Despesas despesa = new Despesas();
+        despesa.setValor(despesasDTO.getValor());
+        despesa.setDataPagamento(despesasDTO.getDataPagamento());
+        despesa.setDataPagamentoEsperado(despesasDTO.getDataPagamentoEsperado());
+        despesa.setTipoDespesa(despesasDTO.getTipoDespesa());
+        despesa.setConta(conta);
         return despesasRepository.save(despesa);
     }
 
-    public Despesas update(Integer id, Despesas despesa){
+    public Despesas update(Integer id, DespesasDTO despesasDTO){
+        Contas conta = contasRepository
+                .findById(despesasDTO.getContaId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta inexistente."));
         Despesas obj = despesasRepository.findById(id).get();
-        obj.setValor(despesa.getValor());
-        obj.setDataPagamento(despesa.getDataPagamento());
-        obj.setDataPagamentoEsperado(despesa.getDataPagamentoEsperado());
-        obj.setTipoDespesa(despesa.getTipoDespesa());
-        obj.setConta(despesa.getConta());
+        obj.setValor(despesasDTO.getValor());
+        obj.setDataPagamento(despesasDTO.getDataPagamento());
+        obj.setDataPagamentoEsperado(despesasDTO.getDataPagamentoEsperado());
+        obj.setTipoDespesa(despesasDTO.getTipoDespesa());
+        obj.setConta(conta);
         return despesasRepository.save(obj);
     }
 

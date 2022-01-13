@@ -1,51 +1,33 @@
-package com.willbsouza.desafiopubfuture.entities;
+package com.willbsouza.desafiopubfuture.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.willbsouza.desafiopubfuture.entities.enums.TipoReceita;
 
-import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 
-@Entity
-public class Receitas {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private Double valor;
+public class ReceitasDTO {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataRecebimento;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataRecebimentoEsperado;
+
+    private Double valor;
     private String descricao;
     private TipoReceita tipoReceita;
+    private Integer contaId;
 
-    @ManyToOne
-    @JoinColumn(name = "conta_id")
-    private Contas conta;
-
-    public Receitas() {
+    public ReceitasDTO() {
     }
 
-    public Receitas(Integer id, Double valor, Date dataRecebimento, Date dataRecebimentoEsperado, String descricao, TipoReceita tipoReceita, Contas conta) {
-        this.id = id;
+    public ReceitasDTO(Double valor, Date dataRecebimento, Date dataRecebimentoEsperado, String descricao, TipoReceita tipoReceita, Integer contaId) {
         this.valor = valor;
         this.dataRecebimento = dataRecebimento;
         this.dataRecebimentoEsperado = dataRecebimentoEsperado;
         this.descricao = descricao;
         this.tipoReceita = tipoReceita;
-        this.conta = conta;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        this.contaId = contaId;
     }
 
     public Double getValor() {
@@ -88,24 +70,13 @@ public class Receitas {
         this.tipoReceita = tipoReceita;
     }
 
-    public Contas getConta() {
-        return conta;
+    public Integer getContaId() {
+        return contaId;
     }
 
-    public void setConta(Contas conta) {
-        this.conta = conta;
+    public void setContaId(Integer contaId) {
+        this.contaId = contaId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Receitas receitas = (Receitas) o;
-        return Objects.equals(id, receitas.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

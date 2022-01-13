@@ -1,5 +1,6 @@
 package com.willbsouza.desafiopubfuture.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.willbsouza.desafiopubfuture.entities.enums.TipoDespesa;
 
 import javax.persistence.*;
@@ -13,7 +14,11 @@ public class Despesas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Double valor;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataPagamento;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataPagamentoEsperado;
     private TipoDespesa tipoDespesa;
 

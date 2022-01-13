@@ -1,5 +1,6 @@
 package com.willbsouza.desafiopubfuture.controller;
 
+import com.willbsouza.desafiopubfuture.dto.DespesasDTO;
 import com.willbsouza.desafiopubfuture.entities.Despesas;
 import com.willbsouza.desafiopubfuture.entities.enums.TipoDespesa;
 import com.willbsouza.desafiopubfuture.service.DespesasService;
@@ -43,13 +44,13 @@ public class DespesasController {
     }
 
     @PostMapping("/despesas")
-    public ResponseEntity<Despesas> save(@RequestBody Despesas despesa){
-        return new ResponseEntity<Despesas>(despesasService.save(despesa),HttpStatus.CREATED);
+    public ResponseEntity<Despesas> save(@RequestBody DespesasDTO despesasDTO){
+        return new ResponseEntity<Despesas>(despesasService.save(despesasDTO),HttpStatus.CREATED);
     }
 
     @PutMapping("/despesas/{id}")
-    public ResponseEntity<Despesas> update(@PathVariable Integer id, @RequestBody Despesas despesa){
-        return new ResponseEntity<Despesas>(despesasService.update(id, despesa), HttpStatus.OK);
+    public ResponseEntity<Despesas> update(@PathVariable Integer id, @RequestBody DespesasDTO despesasDTO){
+        return new ResponseEntity<Despesas>(despesasService.update(id, despesasDTO), HttpStatus.OK);
     }
     @DeleteMapping("/despesas/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Integer id) {
